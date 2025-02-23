@@ -1,8 +1,286 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>Ground Normal Prediction</title>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="Ground normal and pitch prediction from a homography-based image-IMU fusion algorithm.">
+  <meta name="keywords" content="Ground plane estimation, Homography decomposition, Image-based ground plane prediction, IMU-camera fusion, Kalman Filter, Road surface normal prediction, Road surface pitch prediction">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Robust Road Surface Normal and Pitch Estimation via IMU-Camera Fusion</title>
+
+  <!-- Global site tag (gtag.js) - Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-PYVRSFMDRL"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'G-PYVRSFMDRL');
+  </script>
+
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro"
+        rel="stylesheet">
+
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-carousel.min.css">
+  <link rel="stylesheet" href="./static/css/bulma-slider.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+  <link rel="icon" href="./static/images/favicon.svg">
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+  <script src="./static/js/bulma-carousel.min.js"></script>
+  <script src="./static/js/bulma-slider.min.js"></script>
+  <script src="./static/js/index.js"></script>
 </head>
 <body>
-    <h1>Ground Normal Prediction</h1>
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+  <div class="navbar-menu">
+    <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+      <a class="navbar-item" href="https://norbertmarko.github.io/ground-normal-prediction">
+      <span class="icon">
+          <i class="fas fa-home"></i>
+      </span>
+      </a>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          More Research
+        </a>
+        <!-- <div class="navbar-dropdown">
+          <a class="navbar-item" href="https://">
+            research 1
+          </a>
+          <a class="navbar-item" href="https://">
+            research 2
+          </a>
+          <a class="navbar-item" href="https://">
+            research 3
+          </a>
+          <a class="navbar-item" href="https://">
+            research 4
+          </a>
+        </div> -->
+      </div>
+    </div>
+
+  </div>
+</nav>
+
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">Robust Road Surface Normal and Pitch Estimation via IMU-Camera Fusion</h1>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="">Norbert Markó</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a href="">Zoltán Rózsa</a><sup>1</sup>,</span>
+            <span class="author-block">
+              <a href="">Áron Ballagi</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="">Tamás Szirányi</a><sup>1</sup>,
+            </span>
+          </div>
+
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Machine Perception Research Laboratory, HUN-REN SZTAKI, Budapest, Hungary</span>
+            <span class="author-block"><sup>2</sup>Vehicle Industry Research Center, Széchenyi István University, Győr, Hungary</span>
+          </div>
+
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- Video Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-youtube"></i>
+                  </span>
+                  <span>Video</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/norbertmarko/ground-normal-prediction"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code</span>
+                  </a>
+              </span>
+              <!-- Dataset Link. -->
+              <span class="link-block">
+                <a href=""
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Example Data</span>
+                  </a>
+              <span class="link-block">
+                <a href="https://www.kaggle.com/datasets/pz19930809/pandaset"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="far fa-images"></i>
+                  </span>
+                  <span>Complete Data</span>
+                  </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="hero teaser">
+  <div class="container is-max-desktop">
+    <div class="hero-body">
+      <!-- <video id="teaser" autoplay muted loop playsinline height="100%">
+        <source src="./static/videos/teaser.mp4"
+                type="video/mp4">
+      </video> -->
+      <h2 class="subtitle has-text-centered">
+        <!-- put animation here via gif or .mp4 in ./static/videos/video.mp4 -->
+      </h2>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container is-max-desktop">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified">
+            <p>
+            Predicting road surface normal and pitch with image-based
+            algorithms remains a significant challenge, especially when steep inclines,
+            declines, and sudden changes in road inclination are involved.
+            </p> 
+            <p>
+            To solve this problem, we propose a novel image-based algorithm that leverages
+            homography decomposition to achieve accurate ground plane normal
+            and pitch estimation.By integrating a Kalman Filter, our method en-
+            hances prediction stability. Further, we incorporate robust sensor fu-
+            sion by integrating IMU-based odometry, ensuring that the estimates
+            are accurately aligned with real-world motion. Overall, our approach
+            outperforms existing techniques in both accuracy and responsiveness
+            for dynamic driving environments.</p> 
+            <p>
+            Experimental results show that our approach achieves superior performance, reducing average pitch and
+            normal errors by 0.493° and 0.483°, respectively, compared to the
+            current state-of-the-art, and exhibits a shorter transient response in
+            case of a sudden road inclination change. Code will be available at
+            https://norbertmarko.github.io/ground-normal-prediction/
+            </p>
+        </div>
+      </div>
+    </div>
+
+
+
+
+    <!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <!-- <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+        <div class="publication-video">
+          <iframe src="https://www.youtube.com/embed/MrKrnHhk8IA?rel=0&amp;showinfo=0"
+                  frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div> -->
+ 
+  <!-- Result figures -->
+  <div class="columns is-centered has-text-centered">
+    <div class="column is-four-fifths">
+        <h2 class="title is-3">Result Figures</h2>
+    </div>
+  </div>
+
+</div>
+</section>
+
+
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre><code>@article{marko2025roboust,
+  author    = {Norbert Markó and Zoltán Rózsa and Áron Ballagi and Tamás Szirányi},
+  title     = {Robust Road Surface Normal and Pitch Estimation via IMU-Camera Fusion},
+  journal   = {},
+  year      = {2025},
+}</code></pre>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="container">
+    <div class="content has-text-centered">
+      <a class="icon-link"
+         href="">
+        <i class="fas fa-file-pdf"></i>
+      </a>
+      <a class="icon-link" href="https://github.com/norbertmarko" class="external-link" disabled>
+        <i class="fab fa-github"></i>
+      </a>
+    </div>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content">
+          <p>
+            This website is licensed under a <a rel="license"
+                                                href="http://creativecommons.org/licenses/by-sa/4.0/">Creative
+            Commons Attribution-ShareAlike 4.0 International License</a>.
+          </p>
+          <p>
+            Template taken from <a
+              href="https://github.com/nerfies/nerfies.github.io">here</a>.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
 </body>
 </html>
