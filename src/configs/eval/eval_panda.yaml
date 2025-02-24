@@ -1,0 +1,21 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - ../paths/paths_panda
+
+repo_root: ${repo_root}
+
+# seq_num: "039"  # handled in paths_panda.yaml 
+
+output_dir: ${repo_root}/results/eval_panda
+
+gt_dir: ${repo_root}/results/gt_panda
+exp_dir: ${repo_root}/results/exp_hg_panda_ts
+
+# reference data directories (expand if you compare with more)
+ref_data_dirs:
+  - ${repo_root}/results/ref_gnf_panda
+
+# evaluation parameters
+eval_types: ["exp", "paper"]  # options: "exp", "paper"
