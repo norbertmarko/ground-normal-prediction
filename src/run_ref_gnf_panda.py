@@ -10,17 +10,17 @@ import rootutils
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
 
 from pandaset import geometry
-import src._experiments.algos.homography.hg_vis as hg_vis
-import src._experiments.utils.data_utils as data_utils
-import src._experiments.utils.linalg as linalg
-import src._experiments.algos.homography.hg_funcs as hg_funcs
+import src.algos.homography.hg_vis as hg_vis
+import src.utils.data_utils as data_utils
+import src.utils.linalg as linalg
+import src.algos.homography.hg_funcs as hg_funcs
 from scipy.spatial.transform import Rotation as R
 
-import src._experiments.data_funcs.panda_funcs as panda_funcs
+import src.data_funcs.panda_funcs as panda_funcs
 
-from src._experiments._ref.ground_normal_filter.src.filter import GroundNormalFilterIEKF
-from src._experiments._ref.ground_normal_filter.src.visualizer import Visualization
-import src._experiments.eval.eval_norm as eval_norm
+from src._ref.ground_normal_filter.src.filter import GroundNormalFilterIEKF
+from src._ref.ground_normal_filter.src.visualizer import Visualization
+import src.eval.eval_norm as eval_norm
 
 
 # TODO: import later (move func from gen_gt_normal_panda.py first)

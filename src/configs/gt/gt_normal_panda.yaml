@@ -1,0 +1,24 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - ../paths/paths_panda
+
+repo_root: ${repo_root}
+
+panda_root: ${data_root}
+seq_num: ${seq_num}
+output_dir: ${output_dir_gt_panda}
+vis: false
+save_vis: true
+single_frame: false
+
+tf_id: 1  # 0: ego, 1: first frame # 2: world
+lidar_sensor: 0  # 0: Pandar64  1: PandarGT
+
+# resolve the inherent ambiguity in normal vector orientation (vector from these will be [0, 0, 1])
+cam_ref_pt: [0, 0, 1]  # camera reference point (0, 0, 1 in the LiDAR (tf_to_frist_frame) coordinate system)
+plane_ctr_pt: [0, 0, 0] # plane center point (0, 0, 0 in the LiDAR (tf_to_frist_frame) coordinate system)
+
+img_src_size: ${img_src_size}
+roi: ${roi}  # use roi: ${roi.0} to select the first ROI dynamically
