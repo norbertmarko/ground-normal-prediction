@@ -1,0 +1,22 @@
+# @package _global_
+
+defaults:
+  - _self_
+
+repo_root: ${hydra:runtime.cwd}
+data_root: wsl_root  # "wsl_root" or "linux_root"
+
+# 029, 033
+seq_num: "039"
+
+# experiments
+output_dir_exp_hg: ${repo_root}/results/exp_hg_panda
+
+# gt generation
+output_dir_gt_panda: ${repo_root}/results/gt_panda
+# img_src_size: [1920, 1080]
+img_src_size: [1280, 720] # default ROI
+roi:
+  # - points: [[692, 725], [1086, 725], [1219, 955], [536, 956]]
+  - points: [[550, 430], [730, 430], [950, 720], [265, 720]]  # default ROI
+  # - points: [[600, 330], [680, 330], [730, 430], [550, 430]]  # additional ROI (can define)

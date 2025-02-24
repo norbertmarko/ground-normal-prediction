@@ -1,0 +1,25 @@
+# @package _global_
+
+defaults:
+  - _self_
+  - paths/paths_panda
+
+repo_root: ${repo_root}
+
+panda_root: ${data_root}
+seq_num: ${seq_num}
+output_dir: ${repo_root}/results/exp_hg_panda_ts
+vis: false
+save_vis: true
+single_frame: false
+
+gt_dir: ${repo_root}/results/gt_panda
+
+img_src_size: ${img_src_size}
+roi: ${roi}  # use roi: ${roi.0} to select the first ROI dynamically
+invert_direction: false  # whether to invert the direction of homography computation
+accumulate_values: false  # whether to use a ground truth starting point and adjust values (norm, pitch) to it
+handle_outliers: true
+
+# debug parameters
+plot_norm_candidates: true
