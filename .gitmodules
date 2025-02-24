@@ -1,3 +1,6 @@
 [submodule "src/_ref/ground_normal_filter"]
 	path = src/_ref/ground_normal_filter
 	url = https://github.com/norbertmarko/ground_normal_filter
+[submodule "src/_ref/pandaset_devkit"]
+	path = src/_ref/pandaset_devkit
+	url = https://github.com/norbertmarko/pandaset-devkit
