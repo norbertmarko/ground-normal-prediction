@@ -1,0 +1,53 @@
+name: ground-normal-prediction
+
+channels:
+  - nvidia
+  - pytorch
+  - conda-forge
+
+# it is strongly recommended to specify versions of packages installed through conda
+# to avoid situation when version-unspecified packages install their latest major
+# versions which can sometimes break things
+
+# current approach below keeps the dependencies in the same major versions across all
+# users, but allows for different minor and patch versions of packages where backwards
+# compatibility is usually guaranteed
+
+dependencies:
+  - python=3.8
+  - hydra-core=1.*
+  - rich=13.*
+  - pre-commit=3.*
+  - pytest=7.*
+
+  # --------- loggers --------- #
+  # - wandb
+  # - neptune-client
+  # - mlflow
+  # - comet-ml
+  # - aim>=3.16.2 # no lower than 3.16.2, see https://github.com/aimhubio/aim/issues/2550
+
+  - pip>=23
+  - pip:
+      - hydra-optuna-sweeper
+      - hydra-colorlog
+      - rootutils
+      - pyarrow
+      - pandas
+      - matplotlib
+      - lark
+      - albumentations
+      - opencv-python
+      - scienceplots
+      # on ubuntu (Arial and Times New Roman): sudo apt install ttf-mscorefonts-installer && rm -rf ~/.cache/matplotlib
+      
+      # ref. methods
+      - inekf
+      - tqdm
+      - scipy
+
+      # rosbag (pip) / also need ROS noetic base installation (preferably on Ubuntu 20.04 / WSL2)
+      - pycryptodomex==3.21.0
+      - gnupg==2.3.1
+      - rospkg==1.5.1
+      - cv_bridge==1.13.0.post0
