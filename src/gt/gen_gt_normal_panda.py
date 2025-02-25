@@ -348,18 +348,11 @@ def main(cfg: DictConfig) -> None:
 	"""
 	Main entry point for ground truth generation.
 	"""
-	if cfg.panda_root == "wsl_root":
-		panda_root = "/mnt/e/PandaSet"
-	elif cfg.panda_root == "linux_root":
-		panda_root = "/media/norbert/T7/PandaSet"
-	else:
-		raise ValueError("Invalid panda_root value in config.")
- 
 	gt_root = os.path.join(cfg.repo_root, "results", "gt_panda")
 	os.makedirs(gt_root, exist_ok=True)
 
 	# load data (pcs: list, np.ndarray inside list for each frame, access with pcs[frame_idx])
-	images, _, _, _, _ = process_data(panda_root, cfg.seq_num, lidar_sensor=cfg.lidar_sensor)
+	images, _, _, _, _ = process_data(cfg.panda_root, cfg.seq_num, lidar_sensor=cfg.lidar_sensor)
 
 	# handle ROIs
 	if not cfg.roi or len(cfg.roi) == 0:
@@ -375,7 +368,7 @@ def main(cfg: DictConfig) -> None:
 	rois = calculate_scaled_rois(rois, roi_img_src_size, roi_img_dst_size)
 
 	calc_gt_normal(
-		panda_root, cfg.seq_num, rois, cfg.cam_ref_pt, cfg.plane_ctr_pt,
+		cfg.panda_root, cfg.seq_num, rois, cfg.cam_ref_pt, cfg.plane_ctr_pt,
 		gt_root, 
   		tf_id=cfg.tf_id, lidar_sensor=cfg.lidar_sensor,
 	 	vis=cfg.vis, save_vis=cfg.save_vis, single_frame=cfg.single_frame

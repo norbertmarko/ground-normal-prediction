@@ -45,3 +45,27 @@ pip install .
 ## Prepare Evaluation
 
 ## Run Code
+
+> 💡 Before running any of the scripts, go into the repository root, and activate the conda environment as described above.
+
+
+To run the algorithm described in the paper, use the main script:
+```bash
+python src/run_exp_hg_panda_ts.py
+```
+
+You can also run the SOTA method, using the following python script:
+```bash
+python src/run_ref_gnf_panda.py
+```
+
+Run the evaluation script, after you ran both our method and the SOTA method for a certain sequence (default: 039):
+```bash
+python src/eval/eval.py
+```
+
+
+You can re-generate the ground truth (for any sequence) using the following script (set the `data_root` and `seq_num` in `configs/paths/paths_panda.yaml`):
+```bash
+python src/gt/gen_gt_normal_panda.py
+```

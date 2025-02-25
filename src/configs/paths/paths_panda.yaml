@@ -4,7 +4,7 @@ defaults:
   - _self_
 
 repo_root: ${hydra:runtime.cwd}
-data_root: wsl_root  # "wsl_root" or "linux_root"
+data_root: "/media/norbert/T7/PandaSet"
 
 # 029, 033
 seq_num: "039"

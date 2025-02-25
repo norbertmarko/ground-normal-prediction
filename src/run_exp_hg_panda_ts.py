@@ -105,13 +105,6 @@ def main(cfg: DictConfig):
 	"""
 	Main entry point for homography-based experiment pipeline.
 	"""
-	if cfg.panda_root == "wsl_root":
-		panda_root = "/mnt/e/PandaSet"
-	elif cfg.panda_root == "linux_root":
-		panda_root = "/media/norbert/T7/PandaSet"
-	else:
-		raise ValueError("Invalid panda_root value in config.")
-
 	output_dir = os.path.join(cfg.output_dir)
 	os.makedirs(output_dir, exist_ok=True)
 	eval_output_path = os.path.join(output_dir, cfg.seq_num, f"eval_data_{cfg.seq_num}.pkl")
@@ -122,7 +115,7 @@ def main(cfg: DictConfig):
 
 
 	# load data
-	images, camera_K, pitch_xyz = process_data(panda_root, cfg.seq_num)
+	images, camera_K, pitch_xyz = process_data(cfg.panda_root, cfg.seq_num)
 	if len(images) < 2:
 		print("Not enough images in the sequence to compute homography.")
 		return

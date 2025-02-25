@@ -45,9 +45,6 @@ dependencies:
       - inekf
       - tqdm
       - scipy
-
-      # rosbag (pip) / also need ROS noetic base installation (preferably on Ubuntu 20.04 / WSL2)
-      - pycryptodomex==3.21.0
-      - gnupg==2.3.1
-      - rospkg==1.5.1
-      - cv_bridge==1.13.0.post0
+      - fastdtw
+      - scikit-learn
+      - open3d==0.19.0

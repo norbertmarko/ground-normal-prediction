@@ -5,6 +5,8 @@ from datetime import datetime
 from tqdm import tqdm
 import numpy as np
 import cv2
+from omegaconf import DictConfig
+import hydra
 
 import rootutils
 rootutils.setup_root(__file__, indicator=".project-root", pythonpath=True)
@@ -51,26 +53,27 @@ def rotate_vector(vec, R):
 	return vec_tf
 
 
-def eval(panda_root, seq_num, output_root):
+@hydra.main(version_base="1.3", config_path="./configs", config_name="ref_gnf_panda.yaml")
+def eval(cfg: DictConfig):
 	
 	# read reference data
-	dataset, seq_list = panda_funcs.read_pandaset(panda_root)
+	dataset, seq_list = panda_funcs.read_pandaset(cfg.panda_root)
 	
 	# params
 	pandaset_d = None  # distortion coefficients (not required)
 	pandaset_wh = (1280, 720)
 	
 	# create output directories
-	os.makedirs(output_root, exist_ok=True)
-	results_dir = os.path.join(output_root, seq_num)
+	os.makedirs(cfg.output_dir, exist_ok=True)
+	results_dir = os.path.join(cfg.output_dir, cfg.seq_num)
 	os.makedirs(results_dir, exist_ok=True)
 	og_vis_dir = os.path.join(results_dir, "og_vis")
 	os.makedirs(og_vis_dir, exist_ok=True)
-	eval_output_path = os.path.join(results_dir, f"eval_data_{seq_num}.pkl")
+	eval_output_path = os.path.join(results_dir, f"eval_data_{cfg.seq_num}.pkl")
 
 
-	cam_obj = panda_funcs.load_panda_seq_cam(dataset, seq_list, seq_num)
-	gps_obj = panda_funcs.load_panda_seq_gps(dataset, seq_list, seq_num)
+	cam_obj = panda_funcs.load_panda_seq_cam(dataset, seq_list, cfg.seq_num)
+	gps_obj = panda_funcs.load_panda_seq_gps(dataset, seq_list, cfg.seq_num)
 	rel_timestamps, abs_rot_mats, pitch_xyz, vels \
 				  = panda_funcs.parse_panda_seq_poses(cam_obj, gps_obj)
 	rel_rot_mats = panda_funcs.get_panda_seq_rel_rot_mats(abs_rot_mats)
@@ -81,24 +84,24 @@ def eval(panda_root, seq_num, output_root):
 	images = panda_funcs.get_panda_seq_images(cam_obj)
 
 	print(
-		f"Camera intrinsic matrix for PandaSet sequence {seq_num}:\n"
+		f"Camera intrinsic matrix for PandaSet sequence {cfg.seq_num}:\n"
 		f"{np.array2string(camera_K, formatter={'float_kind':lambda x: f'{x:.4f}'})}"
 	)
 
 
 	# comparison loading
 	cam_poses = cam_obj.poses[:]
-	lidar_obj = panda_funcs.load_panda_seq_lidar(dataset, seq_list, seq_num)
+	lidar_obj = panda_funcs.load_panda_seq_lidar(dataset, seq_list, cfg.seq_num)
 	lidar_poses = panda_funcs.parse_panda_seq_lidar_poses(lidar_obj, sensor=0)
 
 	# import ground truth normal vectors
 	gt_path = "/home/norbert/repos/research/img-imu-fusion/results/gt_panda"
-	gt_dir = os.path.join(gt_path, f"{seq_num}", "gt")
-	gt_path = os.path.join(gt_dir, f"gt_data_{seq_num}.pkl")
+	gt_dir = os.path.join(gt_path, f"{cfg.seq_num}", "gt")
+	gt_path = os.path.join(gt_dir, f"gt_data_{cfg.seq_num}.pkl")
 	gt_data = data_utils.load_pickle_data(gt_path)
    
    
-	dataset.unload(seq_num)
+	dataset.unload(cfg.seq_num)
 
 
 	# initialize objects
@@ -190,7 +193,7 @@ def eval(panda_root, seq_num, output_root):
    
 			image = images[idx]
 			combined_image = vis.get_frame(image, compensation_so3)
-			output_path = os.path.join(og_vis_dir, f"{idx:06d}_{seq_num}.jpg")
+			output_path = os.path.join(og_vis_dir, f"{idx:06d}_{cfg.seq_num}.jpg")
 			cv2.imwrite(output_path, combined_image)
 
 
@@ -200,61 +203,23 @@ def eval(panda_root, seq_num, output_root):
 			# 	image, dummy_hg_mat, normal,
 			# 	cam_pts_3d_gt, plane_coeffs_gt, centroid_gt, normal_gt,
 			# 	signed_norm_angle_deg,
-			# 	output_root, seq_num, idx, False, save_vis,
+			# 	cfg.output_dir, cfg.seq_num, idx, False, save_vis,
 			# 	normal_candidates=None
 			# )
 
 			# hg_vis.plot_complex_pitch(
 			# 	image, dummy_hg_mat, pitch_vals,
 			# 	pitch_vals_gt, signed_norm_angle_deg,
-			# 	output_root, seq_num, idx, False, save_vis
+			# 	cfg.output_dir, cfg.seq_num, idx, False, save_vis
 			# )
 
 			pbar.update(1)
 
 	timestamp = datetime.now().strftime("%y-%m-%d-%H-%M-%S")
-	eval_norm.eval_sequence(data_store, results_dir, seq_num, timestamp, print_results=True)
+	eval_norm.eval_sequence(data_store, results_dir, cfg.seq_num, timestamp, print_results=True)
 
 	data_utils.save_pickle_data(eval_data_store, eval_output_path)
 
 
 if __name__ == '__main__':
-
-	wsl_root = "/mnt/e"
-	linux_root = "/media/norbert/T7/"
-	
-	sys_root = wsl_root   # switch to wsl_root if needed
-
-	repo_root = rootutils.find_root(__file__, indicator=".project-root")
-	if repo_root is None:
-		raise FileNotFoundError("Could not find the repository root.")
-	
-	results_root = os.path.join(repo_root, "results")
-	os.makedirs(results_root, exist_ok=True)
-
-	parser = argparse.ArgumentParser(
-		description="Evaluate ground_normal_filter with PandaSet dataset.")
-
-	parser.add_argument(
-		"--seq_num",
-		type=str,
-		default="039",
-		help="PandaSet sequence number (default: 020)"
-	)
-	parser.add_argument(
-		"--panda_root",
-		type=str,
-		default=os.path.join(sys_root, "PandaSet"),
-		help="Root directory for PandaSet"
-	)
-	parser.add_argument(
-		"--panda_output_root",
-		type=str,
-		default=os.path.join(results_root, "ref_gnf_panda"),
-		help="Output directory for PandaSet results"
-	)
-
-	# Parse the arguments
-	args = parser.parse_args()
-	
-	eval(args.panda_root, args.seq_num, args.panda_output_root)
+	eval()
