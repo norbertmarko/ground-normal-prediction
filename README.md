@@ -1,11 +1,14 @@
 # ground-normal-prediction
-Code and supplementary material for the paper.
+Code and supplementary material for the paper "Robust Road Surface Normal and Pitch Estimation via IMU-Camera Fusion".
 
 ## Clone the Repository
 
+Clone project (with submodules):
 ```bash
-# clone project (with submodules)
 git clone --recurse-submodules https://github.com/norbertmarko/ground-normal-prediction
+```
+```bash
+cd ground-normal-prediction
 ```
 ```bash
 git submodule update --init --recursive
@@ -15,11 +18,16 @@ git submodule update --init --recursive
 
 Create environment (you need [miniconda](https://docs.anaconda.com/miniconda/install/) for this).
 
+Create conda environment and install dependencies:
 ```bash
-# create conda environment and install dependencies
+cd ground-normal-prediction
+```
+```bash
 conda env create -f environment.yaml
+```
 
-# activate conda environment (every new console used)
+Activate conda environment (every new console used):
+```bash
 conda activate ground-normal-prediction
 ```
 
