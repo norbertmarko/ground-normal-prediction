@@ -1,6 +1,10 @@
 # ground-normal-prediction
 Code and supplementary material for the paper "Robust Road Surface Normal and Pitch Estimation via IMU-Camera Fusion".
 
+Project website: [https://norbertmarko.github.io/ground-normal-prediction/](https://norbertmarko.github.io/ground-normal-prediction/)
+
+![Demo GIF](./docs/static/images/output_029_normal.gif)
+
 ## Clone the Repository
 
 Clone project (with submodules):
