@@ -57,7 +57,7 @@ pip install .
 ```
 
 ## Prepare Evaluation
-You can find the example data on the following [link:](https://drive.google.com/drive/folders/1ee7xGS2pCp-vJqfjuuMSpEZ_EmV_g6Pa?usp=drive_link).
+You can find the example data on the following [link](https://drive.google.com/drive/folders/1ee7xGS2pCp-vJqfjuuMSpEZ_EmV_g6Pa?usp=drive_link).
 
 1. Download `PandaSet.zip` from the link above and uncompress the data.
 2. Modify the `data_root` variable in the `configs/paths/paths_panda.yaml` file in the repository. It should point to the uncompressed `PandaSet` directory. For example: `"/media/norbert/T7/PandaSet"`
