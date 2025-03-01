@@ -4,7 +4,7 @@ defaults:
   - _self_
 
 repo_root: ${hydra:runtime.cwd}
-data_root: "/media/norbert/T7/PandaSet"
+data_root: "/home/norbert/Downloads/PandaSet"
 
 # 029, 033
 seq_num: "039"

@@ -7,3 +7,5 @@ repo_root: ${repo_root}
 panda_root: ${data_root}
 seq_num: ${seq_num}
 output_dir: ${repo_root}/results/ref_gnf_panda
+
+gt_path: ${repo_root}/results/gt_panda

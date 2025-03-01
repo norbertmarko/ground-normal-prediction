@@ -95,8 +95,7 @@ def eval(cfg: DictConfig):
 	lidar_poses = panda_funcs.parse_panda_seq_lidar_poses(lidar_obj, sensor=0)
 
 	# import ground truth normal vectors
-	gt_path = "/home/norbert/repos/research/img-imu-fusion/results/gt_panda"
-	gt_dir = os.path.join(gt_path, f"{cfg.seq_num}", "gt")
+	gt_dir = os.path.join(cfg.gt_path, f"{cfg.seq_num}", "gt")
 	gt_path = os.path.join(gt_dir, f"gt_data_{cfg.seq_num}.pkl")
 	gt_data = data_utils.load_pickle_data(gt_path)
    
