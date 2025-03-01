@@ -7,6 +7,8 @@ Project website: [https://norbertmarko.github.io/ground-normal-prediction/](http
 
 ## Clone the Repository
 
+The commands below are Linux-based. To run the code, you can either use WSL2 with Ubuntu 22.04 or native Ubuntu (tested with 22.04).
+
 Clone project (with submodules):
 ```bash
 git clone --recurse-submodules https://github.com/norbertmarko/ground-normal-prediction
@@ -55,11 +57,12 @@ pip install .
 ```
 
 ## Prepare Evaluation
-1. Download the example data from the following [link:](https://drive.google.com/drive/folders/1ee7xGS2pCp-vJqfjuuMSpEZ_EmV_g6Pa?usp=drive_link)
-2. Uncompress the data.
-3. Modify the `data_root` variable in `configs/paths/paths_panda.yaml`. It should point to the `PandaSet` directory. For example: `"/media/norbert/T7/PandaSet"`
-4. Download the generated ground truth from the following [link:](https://drive.google.com/drive/folders/1ee7xGS2pCp-vJqfjuuMSpEZ_EmV_g6Pa?usp=drive_link) (`gt_panda` folder)
-5. Put the ground truth folder into the `results` directory.
+You can find the example data on the following [link:](https://drive.google.com/drive/folders/1ee7xGS2pCp-vJqfjuuMSpEZ_EmV_g6Pa?usp=drive_link).
+
+1. Download `PandaSet.zip` from the link above and uncompress the data.
+2. Modify the `data_root` variable in the `configs/paths/paths_panda.yaml` file in the repository. It should point to the uncompressed `PandaSet` directory. For example: `"/media/norbert/T7/PandaSet"`
+3. Download the generated ground truth from the link above (`gt_panda` folder).
+4. Put the ground truth folder into the `results` directory in the repository.
 
 ## Run Code
 
